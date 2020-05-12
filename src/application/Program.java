@@ -1,6 +1,8 @@
 package application;
 
 import entities.Client;
+import entities.Order;
+import entities.OrderItem;
 import entities.Product;
 import entities.enums.OrderStatus;
 
@@ -24,12 +26,15 @@ public class Program {
         String email = sc.next();
         System.out.print("Birth date (DD/MM/YYYY):");
         Date birthDate =  sdf.parse(sc.next());
+        // Instanciar cliente
         Client client = new Client(name, email, birthDate);
 
         // Order Data
         System.out.println("Enter order data:");
         System.out.print("Status: ");
-        String orderStatus = sc.next();
+        OrderStatus status = OrderStatus.valueOf(sc.next());
+        // Instanciar a ordem
+        Order order = new Order(new Date(), status, client);
         System.out.print("How many items to this order? ");
         int n = sc.nextInt();
         for (int i=1;i<=n;i++) {
@@ -39,9 +44,15 @@ public class Program {
             String productName = sc.nextLine();
             System.out.print("Product price: ");
             Double productPrice = sc.nextDouble();
+            // Instanciar produtos
             Product product = new Product(productName, productPrice);
+            System.out.print("Quantity: ");
+            int quantity = sc.nextInt();
+            // Instanciar itens pedido
+            OrderItem orderItem = new OrderItem(quantity,productPrice, product);
+            order.addItem(orderItem);
         }
-        System.out.println(client);
+        System.out.println(order);
 
         sc.close();
     }
